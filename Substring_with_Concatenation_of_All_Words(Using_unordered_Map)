@@ -40,3 +40,50 @@ public:
 
 
 # This is the solution using unordered_map:
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> ret;
+        
+        int words_size=words.size();
+        if(words_size==0) return ret;
+        
+        int len=words[0].size();
+        int s_size=s.size();
+        if(len==0||len>s_size) return ret;
+        
+        int len_s=words.size()*len;
+        if(len_s>s_size) return ret;            //几种不合法的情况
+        
+        int nod=s_size-len_s;
+        
+        typedef unordered_map<string,int> map;              //创建一个以string为key，以string出现次数为value
+
+        map dic;            //创建一个dictionary，记载这words里的string及个数
+
+        vector<string> words_distinct;      //呈装有多少个不同的string
+        
+        for(auto word:words){dic[word]++;
+                             if(dic[word]==1) words_distinct.push_back(word);}
+
+        while(1){
+            if(nod<0) return ret;
+            string temp_s=s.substr(nod,len_s);
+
+            map mp;
+            for(int i=0;i<len_s;i+=len){
+                string ss=temp_s.substr(i,len);
+                if(dic[ss]==0) goto label;
+                mp[ss]++;
+            }
+
+            for(auto word:words_distinct){
+                if(mp[word]!=dic[word]) goto label;
+            }
+            
+            ret.push_back(nod);
+            label: ;
+            nod--;
+        }
+    }
+};
