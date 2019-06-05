@@ -63,7 +63,7 @@ public:
 
         vector<string> words_distinct;      //呈装有多少个不同的string
         
-        for(auto word:words){dic[word]++;
+        for(auto word:words){dic[word]++;   //这里就体现出无序图的优越性了，这种<string,int>类型的map，加元素直接上，int的value自动初始为0
                              if(dic[word]==1) words_distinct.push_back(word);}
 
         while(1){
