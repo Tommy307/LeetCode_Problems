@@ -1,8 +1,7 @@
 double myPow(double x, int n) {
     bool neg = (n<0);
-    long l = n;
-    if(neg)
-        l = (-1) * l;
+    long l = n;                        //这样就可以避免n为INT32_MIN时，变成相反数会溢出的问题！
+    if(neg) l = (-1) * l;
     
     double res = 1;
     while(l > 0)
@@ -10,7 +9,9 @@ double myPow(double x, int n) {
         if(l & 1 > 0)
             res *= x;
         x = x * x;
-        l = l>>1;
+        l = l>>1;                       //这个地方可以大大加快程序运行速度。
+                                          意思：l为奇数时，让res乘以个x，当l为偶数时，就可以把x平方一下，
+                                          这样就可以把需要做的乘法的次数开更了。
     }
     
     if(neg)
