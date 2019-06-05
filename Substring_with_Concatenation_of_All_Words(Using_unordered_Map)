@@ -1,0 +1,38 @@
+# This is my solution:
+> Using multiple for_cycle.
+>> And suffered with TimeOut!
+class Solution {
+private:
+bool is_conca(string& s,vector<string> w){
+    int len=w[0].size();
+    vector<int> poi;
+    for(int i=0;i<s.size();i+=len){
+        string c_s=s.substr(i,len);
+        for(int j=0;j<w.size();++j){
+            if(w[j]==c_s){
+                w.erase(w.begin()+j);
+                break;
+            }
+            else if(j==w.size()-1) return 0;
+        }
+    }
+    return 1;
+}
+
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> res(1,-1);
+        if(s==""||words.size()==0) return res;
+        vector<int> ret(0);
+        int len=words[0].size();
+        int len_s=words.size()*len;
+        int nod=s.size()-len_s;
+        
+        while(1){
+            if(nod<0) return ret;
+            string temp_s=s.substr(nod,len_s);
+            if(is_conca(temp_s,words)) ret.push_back(nod);
+            nod--;
+        }
+    }
+};
