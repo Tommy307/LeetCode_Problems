@@ -1,0 +1,18 @@
+double myPow(double x, int n) {
+    bool neg = (n<0);
+    long l = n;
+    if(neg)
+        l = (-1) * l;
+    
+    double res = 1;
+    while(l > 0)
+    {
+        if(l & 1 > 0)
+            res *= x;
+        x = x * x;
+        l = l>>1;
+    }
+    
+    if(neg)
+        res = 1 / res;
+    return res;
