@@ -1,0 +1,71 @@
+#5
+# 找到一个字符串中最长的对称子串：
+
+>> 一开始我只是简单的遍历所有字串，同时用数重循环来判定字串是否对称，然后超时了。。。：
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string ret;
+        if(s.empty()) return ret;
+        ret+=s[0];
+        int len=2;
+        while(1){
+            for(int i=0;i<=s.size()-len;++i){
+                string sub=s.substr(i,len);
+                for(int j=0;j<len/2;++j){
+                    if(sub[j]!=sub[len-1-j]) goto label;
+                }
+                ret=sub;
+                if(len==s.size()) return ret;
+                len++;
+                goto label1 ;
+                label: ;
+            }
+            if(len==s.size()) return ret;
+            else len++;
+            label1: ;
+        }
+    }
+};
+
+>> 然后我神奇地想到所有对称字串都是从一个字符，或者两个相等的字符双向展开得到的，所以只需遍历字符串的单个字符和成对相等的字符，尽力将其展开，并保存最长的就行了：
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string ret;
+        if(s.empty()) return ret;
+        ret+=s[0];
+        if(s.size()==1) return ret;
+
+        for(int i=1;i<s.size();++i){
+            if(s[i-1]==s[i]){
+                int begin=i-2,end=i+1;
+                while(1){
+                        if(begin<0||end>=s.size()||s[begin]!=s[end]) break;
+                        begin--;
+                        end++; }
+                begin++;end--;
+                int len=end-begin+1;
+                if(len>ret.size()){
+                    string sub=s.substr(begin,len);
+                    ret=sub;
+                }
+            }
+            
+                int begin=i-1,end=i+1;
+                while(1){
+                        if(begin<0||end>=s.size()||s[begin]!=s[end]) break;
+                        begin--;
+                        end++; }
+                begin++;end--;
+                int len=end-begin+1;
+                if(len>ret.size()){
+                    string sub=s.substr(begin,len);
+                    ret=sub;
+                }
+        }
+        return ret;
+    }
+};
+
+>>然后就成了，哈哈哈哈哈！
