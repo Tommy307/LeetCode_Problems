@@ -1,0 +1,27 @@
+# 3
+>> 
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int len=s.size();
+        int ret=0;
+        if(len==0) return ret;
+
+        ret=1;
+        string ss;
+        for(int i=0;i<s.size()-ret;++i){            //这里的循环条件变成了s.size()-ret，这是因为当i>=这个值时，将不可能再出现比ret大的字串了。
+            ss.erase(0,1);
+            if(ss.size()==0) ss+=s[i];
+            int index=i+ss.size();                  //这里不需要每次都从头开始找起，因为那样做了很多重复的工作，只需把每次找到的无重复元素子串保留下来，每一次去掉字串的头，然后从子串的尾巴后面的一个元素开始拓展就好了。
+                                                    //返回整个过程中子串出现过的最大长度。
+            while(1){
+                if(index>=s.size()) break;
+                if(ss.find(s[index])==-1) ss+=s[index];
+                else break;
+                index++;
+            }
+            if(ss.size()>ret) ret=ss.size();
+        }
+        return ret;
+    }
+};
