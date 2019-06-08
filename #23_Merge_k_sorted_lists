@@ -1,0 +1,86 @@
+# 一开始我用vector<int>来按顺序呈装所有list里的数：
+struct ListNode {
+      int val;
+      ListNode *next;
+      ListNode(int x) : val(x), next(NULL) {}
+};
+ 
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+		ListNode* ret;
+		if(lists.size()==0) return NULL;
+
+		vector<int> num;
+		while(1){
+			int min;
+			int index;
+			int is_used=0;
+			for(int i=0;i<lists.size();++i){
+				if(lists[i]==NULL) {lists.erase(lists.begin()+i,lists.begin()+i+1);--i;}
+				else if(!is_used){
+					index=i;
+					is_used=1;
+				}
+				else if(lists[i]->val<lists[index]->val) index=i;
+			}
+            if(lists.size()==0) break;
+			num.push_back(lists[index]->val);
+			lists[index]=lists[index]->next;
+		}
+
+        if(num.size()==0) return NULL;
+		ret=new ListNode(num[0]);
+		ListNode* head=ret;
+		for(int i=1;i<num.size();++i){
+			head->next=new ListNode(num[i]);
+			head=head->next;
+		}
+		return ret;
+    }
+};
+
+>> 结果363ms
+>> 然后我使用了map<int,int> 后面一个int用来计数，由于map有强大的自动排序功能，于是我乘风而起:
+struct ListNode {
+      int val;
+      ListNode *next;
+      ListNode(int x) : val(x), next(NULL) {}
+};
+
+
+#include<map>  
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.size()==0) return NULL;
+
+		map<int,int> mp;
+		for(int i=0;i<lists.size();++i){
+			while(1){
+                if(lists[i]==NULL) break;
+                else{
+                    mp[lists[i]->val]++;
+                    lists[i]=lists[i]->next;
+                }
+            }
+        }
+
+        if(mp.size()==0) return NULL;
+
+        ListNode* ret=new ListNode(mp.begin()->first);
+        mp.begin()->second--;
+        ListNode* head=ret;
+
+        map<int,int>::iterator iter;
+        for(iter=mp.begin();iter!=mp.end();++iter){
+            for(int i=0;i<iter->second;++i){
+                head->next=new ListNode(iter->first);
+                head=head->next;
+            }
+        }
+        return ret;
+    }
+};
+
+//20ms,最后也没能超过100%，还是很可惜的。。。
