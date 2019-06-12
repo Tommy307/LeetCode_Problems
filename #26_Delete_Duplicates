@@ -1,0 +1,20 @@
+# 去掉一个vector<int> nums变量中的重复的value，返回剩下元素的长度（输出仍是按nums输出）
+
+>> 我想这再定义一个同类型的vector，然后把不重复的赋给它，最后将nums替换一下就好了：
+但这样子还是慢了很多，
+其实可以直接修改nums，把不重复的提到前面就好了，跟冒泡排序有异曲同工之妙。
+
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if(nums.empty()) return 0;
+        int slow=0;
+        int fast=1;
+        for(;fast<nums.size();++fast){
+            if(nums[fast]!=nums[slow]){
+                nums[++slow]=nums[fast];
+            }
+        }
+        return slow+1;
+    }
+};
