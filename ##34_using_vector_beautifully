@@ -3,7 +3,8 @@ vector<int> searchRange( vector<int>& nums, int target )
 	auto lowerIt = lower_bound( nums.begin(), nums.end(), target );       //佚代器只能用auto来呈装了。
 
 	if ( lowerIt == nums.end() || *lowerIt != target ) 
-		return { -1, -1 };
+		return { -1, -1 };				//真是有很多可圈可点的地方呀，这里返回vector<int>可以返回常量的形式了。
+		//注意这里是花括号啊！
 
 	auto upperIt = upper_bound( nums.begin(), nums.end(), target );       //lower_bound,upper_bound应该就是找了很久的vector的查找函数了。
     
