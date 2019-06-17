@@ -1,0 +1,63 @@
+class can{
+    public:
+    vector<int> v;
+    int remain;
+    can(int a){
+        remain=a;
+    }
+    can(vector<int>& vv,int re){
+        v=vv;
+        remain=re;
+    }
+    ~can(){}
+    can& input(int a){
+        vector<int> temp(v);
+        temp.push_back(a);
+        int re=remain-a;
+        can* A=new can(temp,re);
+        return *A;
+    }
+};
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ret;
+
+        int length=candidates.size();
+        if(length==0) return ret;
+
+
+        can A(target);
+        vector<can> cans;
+        cans.push_back(A);
+
+        for(int i=0;i<length;++i){
+            int len=cans.size();
+
+            for(int j=0;j<len;++j){
+                cans.push_back(cans[j].input(candidates[i]));
+                while(1){
+                    if(cans.back().remain<0){cans.pop_back();break;}
+                    else if(cans.back().remain==0){
+                        ret.push_back(cans.back().v);
+                        cans.pop_back();
+                        break;
+                    }
+                    else cans.push_back(cans.back().input(candidates[i]));
+                }
+            }
+        }
+
+        for(int i=0;i<cans.size();++i){
+            if(cans[i].remain==0){ret.push_back(cans[i].v);}
+        }
+        return ret;
+    }
+};
+
+
+
+//总结一下：
+//学会用class解决问题是一个好的开始
+//但在写的时候对循环条件的控制真的sucked，所以要注意啊！
+//运行速度和内存占用双炸，，，
