@@ -1,0 +1,23 @@
+返回nums里面的数的所有排列
+
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ret;
+        if(nums.empty()) return ret;
+        ret.push_back({nums[0]});
+
+        for(int i=1;i<nums.size();++i){
+            int ll=ret.size();
+            for(int j=0;j<ll;++j){
+                for(int t=ret[j].size();t>=0;--t){
+                    ret.push_back(ret[j]);
+                    ret.back().insert(ret.back().begin()+t,nums[i]);      这个地方就可以在ret后面直接加，然后把前面的删掉，这样可以节约内存，也能提高运行速度。
+                }
+            }
+            ret.erase(ret.begin(),ret.begin()+ll);
+        }
+        sort(ret.begin(),ret.end());          //这个sort很奇怪呀，反序一直弄不好。
+        return ret;
+    }
+};
