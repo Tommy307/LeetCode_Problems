@@ -1,0 +1,20 @@
+You are climbing a stair case. It takes n steps to reach to the top.
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+Note: Given n will be a positive integer.
+
+class Solution {
+public:
+    int climbStairs(int n) {
+        if(n<2) return n;
+        int a=1;  //i=0
+        int b=1;  //i=1
+        int c;
+        for(int i=2;i<=n;++i){
+            c=a+b;                  //在i级的时候，只可能从i-1级和i-2级爬上来，所以i级的可能数就是i-1的和i-2级的可能方法数相加，
+                                    //于是开始用三个变量加上循环进行伪递归。因为递归超时了。。。。
+            a=b;
+            b=c;
+        }
+        return c;
+    }
+};
