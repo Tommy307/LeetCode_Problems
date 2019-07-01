@@ -17,7 +17,7 @@ public:
             }
             ret.erase(ret.begin(),ret.begin()+ll);
         }
-        sort(ret.begin(),ret.end());          //这个sort很奇怪呀，反序一直弄不好。
+        sort(ret.begin(),ret.end());          //这个sort很奇怪呀，反序一直弄不好。反序（reverse(ret.begin(),ret.end());）先排序再倒置
         return ret;
     }
 };
