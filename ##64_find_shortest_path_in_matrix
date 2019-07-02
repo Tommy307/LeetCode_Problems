@@ -14,6 +14,7 @@ Output: 7
 Explanation: Because the path 1→3→1→1→1 minimizes the sum.
 
 ******************************************************这个算法在矩阵找最短路径中很常用******************************************************
+#define min(a,b) a<b?a:b
 class Solution {
 public:
 int minPathSum(vector<vector<int>>& grid) {
