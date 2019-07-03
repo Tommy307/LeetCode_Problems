@@ -35,5 +35,33 @@ if(grid.size()==0) return 0;
     }
 
     return grid[grid.size()-1][grid[0].size()-1]; 
-}
+    }
+};
+    
+    ************************************在寻找所有不同路径的数目时，可将矩阵的第0列和第0行设置为1*******************************************
+    *************************然后从第1列第1行开始按列遍历，每个位置可以到达的路径数就等于上方对角的两个位置的路径数的和************************
+
+A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+
+The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+
+How many possible unique paths are there?
+
+##solution：
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        if(m<2||n<2) return 1;
+        
+        int board[m][n];            //用二维数组而不用vector可以节约大量内存
+        
+        for(int i=1;i<n;++i){
+            board[0][i]=1;
+            for(int j=1;j<m;++j){
+                board[j][0]=1;          //把第0行和第0列的初始化放在里面可以大大提高速度
+                board[j][i]=(board[j-1][i]+board[j][i-1]);
+            }
+        }
+        return board[m-1][n-1];
+    }
 };
