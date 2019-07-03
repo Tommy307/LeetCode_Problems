@@ -1,0 +1,78 @@
+有时候真的很需要直觉吧，，，
+我选择按列遍历，情况确实比别人的按行遍历复杂一些，然后用了很多层循环，占的内存很少但是速度太慢了，因为主要要注意速度，所以把两个代码放在一起学习一下：
+
+Mine：
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int ret=0;
+        if(matrix.empty()) return ret;
+        vector<int> temp;
+        for(int i=0;i<matrix.size();++i){
+            if(matrix[0].size()*(matrix.size()-i)<ret) break;
+            for(int j=0;j<matrix[0].size();++j){
+                if(matrix[i][j]=='1') temp.push_back(j);
+                if(temp.size()*(matrix.size()-i)<ret) goto label2;
+                    if(!temp.empty()){
+                            for(int v=0;v<temp.size();++v){                         //这个地方需要把所有相邻且为1的所有组合情况遍历一遍，即使排除了一些显然无法超过ret的情况，但复杂度仍然是高了很多的。。。虽然还不会算复杂度
+                                if((temp.size()-v)*(matrix.size()-i)<ret) break;
+                                int breadth_=1;
+                                for(int w=i+1;w<matrix.size();++w){
+                                    for(int y=v;y<temp.size();++y){
+                                        if(matrix[w][temp[y]]=='0') goto label_;
+                                    }
+                                    breadth_++;
+                                }
+                                label_: ;
+                                int area_=breadth_*(temp.size()-v);
+                                if(area_>ret) ret=area_;
+                            }
+                    }
+                label2: ;
+                if(matrix[i][j]=='0'||j==matrix[0].size()-1) temp.clear();
+            }
+        }
+        return ret;
+    }
+};
+
+Other's:*********************************************************************************************************************************
+class Solution{
+public:
+int maximalRectangle(vector<vector<char> > &matrix) {
+    if(matrix.empty()){
+        return 0;
+    }
+    int maxRec = 0;
+    vector<int> height(matrix[0].size(), 0);
+    for(int i = 0; i < matrix.size(); i++){
+        for(int j = 0; j < matrix[0].size(); j++){
+            if(matrix[i][j] == '0'){
+                height[j] = 0;
+            }
+            else{
+                height[j]++;
+            }
+        }
+        maxRec = max(maxRec, largestRectangleArea(height));     //height按行遇到‘0’就将该列的height设为0，否则++，然后调用外面的函数，如果相邻两列/多列的高度相同就说明是矩形了
+    }
+    return maxRec;
+}
+
+int largestRectangleArea(vector<int> &height) {
+    stack<int> s;
+    height.push_back(0);
+    int maxSize = 0;
+    for(int i = 0; i < height.size(); i++){
+        if(s.empty() || height[i] >= height[s.top()]){
+            s.push(i);
+        }
+        else{
+            int temp = height[s.top()];
+            s.pop();
+            maxSize = max(maxSize, temp * (s.empty() ? i : i - 1 - s.top()));
+            i--;
+        }
+    }
+    return maxSize;
+}};
